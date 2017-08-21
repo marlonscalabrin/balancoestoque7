@@ -129,12 +129,12 @@ Estoque = function() {
 
 	this.inicializarCampos = function() {
 		if (this.id)
-			document.getElementById("id").value = this.id.toString().replace(".", ",");
-		document.getElementById("codigo").value = this.codigo.toString().replace(".", ",");
-		document.getElementById("rua").value = this.rua.toString().replace(".", ",");
-		document.getElementById("prateleira").value = this.prateleira.toString().replace(".", ",");
-		document.getElementById("gaveta").value = this.gaveta.toString().replace(".", ",");
-		document.getElementById("quantidade").value = this.quantidade.toString().replace(".", ",");
+			document.getElementById("id").value = this.id.toString();
+		document.getElementById("codigo").value = this.codigo.toString();
+		document.getElementById("rua").value = this.rua.toString();
+		document.getElementById("prateleira").value = this.prateleira.toString();
+		document.getElementById("gaveta").value = this.gaveta.toString();
+		document.getElementById("quantidade").value = this.quantidade.toString();
 	}
 	
 	this.corrigeVirgula = function(event) {
@@ -142,11 +142,14 @@ Estoque = function() {
 	}
 	
 	this.salvar = function() {
-		this.id = parseFloat(document.getElementById("id").value.replace(",", "."));
-		this.codigo = parseFloat(document.getElementById("codigo").value.replace(",", "."));
-		this.rua = parseFloat(document.getElementById("rua").value.replace(",", "."));
-		this.prateleira = parseFloat(document.getElementById("prateleira").value.replace(",", "."));
-		this.gaveta = parseFloat(document.getElementById("gaveta").value.replace(",", "."));
+		if (document.getElementById("id").value != "")
+			this.id = parseInt(document.getElementById("id").value);
+		else
+			this.id = "";
+		this.codigo = document.getElementById("codigo").value;
+		this.rua = document.getElementById("rua").value;
+		this.prateleira = document.getElementById("prateleira").value;
+		this.gaveta = document.getElementById("gaveta").value;
 		this.quantidade = parseFloat(document.getElementById("quantidade").value.replace(",", "."));
 		
 		var data;
