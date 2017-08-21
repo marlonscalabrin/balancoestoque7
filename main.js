@@ -303,11 +303,9 @@ Estoque = function() {
 estoque = new Estoque();
 
 var options = {
-	DecodeQRCodeRate: 5,
-	DecodeBarCodeRate: 5,
-	successTimeout: 500,
-	codeRepetition: true,
-	tryVertical: true,
+	successTimeout: 1000,
+	codeRepetition: false,
+	tryVertical: false,
 	frameRate: 10,
 	width: 320,
 	height: 240,
@@ -325,14 +323,14 @@ var options = {
 	},
 	flipVertical: false,
 	flipHorizontal: false,
-	zoom: 4,
+	zoom: 2,
 	decoderWorker: 'DecoderWorker.js',
 	brightness: 0,
 	autoBrightnessValue: false,
-	grayScale: true,
+	grayScale: false,
 	contrast: 0,
 	threshold: 0,
-	sharpness: [],      // to On declare matrix, example for sharpness ->  [0, -1, 0, -1, 5, -1, 0, -1, 0]
+	sharpness: [0, -1, 0, -1, 5, -1, 0, -1, 0],      // to On declare matrix, example for sharpness ->  [0, -1, 0, -1, 5, -1, 0, -1, 0]
 	resultFunction: function(result) {
 		/*
 			result.format: code format,
