@@ -60,6 +60,7 @@ Estoque = function() {
 						console.log(transaction, results);
 						data.id = results.insertId;
 					}, function(transaction, error) {
+						console.log("Data: " + data);
 						console.error(transaction, error);
 					});
 			}
@@ -99,7 +100,7 @@ Estoque = function() {
 		var self = this;
 		this.db.transaction(
 			function (transaction) {
-				transaction.executeSql("SELECT * FROM estoque;",
+				transaction.executeSql("SELECT * FROM estoque",
 					[], function(transaction, results) {
 						self.preencherDados(transaction, results);
 						self.mostrarLista();
@@ -112,8 +113,10 @@ Estoque = function() {
 	
 	this.preencherDados = function(transaction, results) {
 		this.dados = [];
+		console.log('t',transaction);
+		console.log('r',results);
 		for (var i=0; i<results.rows.length; i++) {
-			var row = results.rows.data(i);
+			var row = results.rows[i];
 			var data = {};
 	 
 			data.id = row['id'];
