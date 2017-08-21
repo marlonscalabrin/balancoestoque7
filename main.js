@@ -188,6 +188,7 @@ Estoque = function() {
 	this.mostrarLista = function() {
 		var corpo = document.getElementById("corpoTabela");
 		corpo.innerHTML = "";
+		var dados = this.dados;
 		for (var i = 0; i < dados.length; i++) {
 			var tr = document.createElement("tr");
 			var td = document.createElement("td");
