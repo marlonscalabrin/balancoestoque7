@@ -308,7 +308,7 @@ var options = {
 	tryVertical: false,
 	frameRate: 10,
 	width: 320,
-	height: 240,
+	height: 160,
 	constraints: {
 		video: {
 			mandatory: {
