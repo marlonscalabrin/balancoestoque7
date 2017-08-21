@@ -57,9 +57,10 @@ Estoque = function() {
 				transaction.executeSql("INSERT INTO estoque(codigo, rua, prateleira, gaveta, quantidade)" +
 					" VALUES (?, ?, ?, ?, ?, ?)", params,
 					function(transaction, results){
+						console.log(transaction, results);
 						data.id = results.insertId;
-					}, function(error) {
-						console.log(error);
+					}, function(transaction, error) {
+						console.error(transaction, error);
 					});
 			}
 		);
@@ -166,7 +167,7 @@ Estoque = function() {
 		if (data) {
 			data["codigo"] = this.codigo;
 			data["rua"] = this.rua;
-			data["prateleira"] = his.prateleira;
+			data["prateleira"] = this.prateleira;
 			data["gaveta"] = this.gaveta;
 			data["quantidade"] = this.quantidade;
 			this.update(data);
