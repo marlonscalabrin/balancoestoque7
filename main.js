@@ -314,8 +314,8 @@ var options = {
 	constraints: {
 		video: {
 			mandatory: {
-				maxWidth: 1280,
-				maxHeight: 720
+				maxWidth: 1900,
+				maxHeight: 1080
 			},
 			optional: [{
 				sourceId: true
@@ -325,11 +325,11 @@ var options = {
 	},
 	flipVertical: false,
 	flipHorizontal: false,
-	zoom: 2,
+	zoom: 4,
 	decoderWorker: 'DecoderWorker.js',
 	brightness: 0,
 	autoBrightnessValue: false,
-	grayScale: false,
+	grayScale: true,
 	contrast: 0,
 	threshold: 0,
 	sharpness: [],      // to On declare matrix, example for sharpness ->  [0, -1, 0, -1, 5, -1, 0, -1, 0]
@@ -362,8 +362,8 @@ var canvas = document.querySelector('canvas');
 var decoder = new WebCodeCamJS(canvas);
 
 decoder.init(options);
-decoder.buildSelectMenu('#camera-select', 'environment|back');
+/*decoder.buildSelectMenu('#camera-select', 'environment|back');
 decoder.buildSelectMenu('#camera-select', 'user|front');
 decoder.buildSelectMenu('#camera-select', 0);
-
+*/
 decoder.play();
