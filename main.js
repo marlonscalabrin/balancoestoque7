@@ -268,7 +268,7 @@ Estoque = function() {
 			data += this.dados[i].gaveta + ",";
 			data += this.dados[i].quantidade + "\r\n";
 		}
-		window.location = 'data:text/csv;base64,' + window.btoa(data));
+		window.location = 'data:text/csv;base64,' + window.btoa(data);
 	}
 	
 }
