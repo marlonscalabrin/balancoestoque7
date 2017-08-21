@@ -10,7 +10,7 @@ Estoque = function() {
 	this.initDatabase = function() {
 		try {
 			if (!window.openDatabase) {
-				alert('Este navegador não suporta banco de dados.\nAbra com uma versão recente do navagador Chrome.');
+				alert('Este navegador não suporta banco de dados.\nAbra com uma versão recente do navegador Chrome.');
 			} else {
 				var shortName = 'estoque';
 				var version = '1.0';
