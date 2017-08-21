@@ -156,16 +156,26 @@ Estoque = function() {
 		this.quantidade = parseFloat(document.getElementById("quantidade").value.replace(",", "."));
 		
 		var data;
-		for (i = 0; i < this.dados.length; i++) {
-			if (this.dados[i].codigo == this.codigo) {
-				data = this.dados[i];
-				if (confirm("Item com o mesmo código já cadastrado:" +
-				"\n Rua: " + data.rua +
-				"\n Prateleira: " + data.prateleira +
-				"\n Gaveta: " + data.gaveta +
-				"\n Quantidade: " + data.quantidade) + 
-				"\nDeseja editar? Caso não irá duplicar.") {
-					data = null;
+		if (this.id != null && this.id != "") {
+			for (i = 0; i < this.dados.length; i++) {
+				if (""+this.dados[i].id == ""+this.id) {
+					data = this.dados[i];
+					break;
+				}
+			}
+		} else {
+			for (i = 0; i < this.dados.length; i++) {
+				if (this.dados[i].codigo == this.codigo) {
+					data = this.dados[i];
+					if (!confirm("Item com o mesmo código já cadastrado:" +
+					"\n Rua: " + data.rua +
+					"\n Prateleira: " + data.prateleira +
+					"\n Gaveta: " + data.gaveta +
+					"\n Quantidade: " + data.quantidade + 
+					"\nDeseja editar? Cancelar irá duplicar.")) {
+						data = null;
+					}
+					break;
 				}
 			}
 		}
@@ -190,6 +200,7 @@ Estoque = function() {
 			this.dados.push(data);
 		}
 		this.mostrarLista();
+		this.novo();
 	}
 
 	this.mostrarLista = function() {
@@ -218,13 +229,16 @@ Estoque = function() {
 			var remover = document.createElement("input");
 			editar.type = "button";
 			remover.type = "button";
-			editar.onclick = "editar("+dados[i].id+"); return false;";
-			editar.onclick = "remover("+dados[i].id+"); return false;";
+			editar.setAttribute("onclick", "estoque.editar("+dados[i].id+"); return false;");
+			editar.value = "Editar";
+			remover.setAttribute("onclick", "estoque.remover("+dados[i].id+"); return false;");
+			remover.value = "Remover";
 			td.appendChild(editar);
 			td.appendChild(remover);
 			tr.appendChild(td);
 			corpo.appendChild(tr);
 		}
+		document.getElementById("tabela").style.display="";
 	}
 	
 	this.novo = function() {
@@ -261,7 +275,7 @@ Estoque = function() {
 			if (this.dados[i].id == id) {
 				data = this.dados[i];
 				this.delete(data);
-				delete this.dados[i];
+				this.dados.splice(i, 1);
 				break;
 			}
 		}
@@ -270,14 +284,19 @@ Estoque = function() {
 	
 	this.exportarCSV = function() {
 		var data = '';
-		for (var i = 0; i = this.dados.length; i++) {
-			data += this.dados[i].id + ",";
-			data += this.dados[i].rua + ",";
-			data += this.dados[i].prateleira + ",";
-			data += this.dados[i].gaveta + ",";
+		var sep = prompt("Digite o caracter separador. ';' para Excel ou ',' para demais editores de planilha.");
+		sep = sep[0];
+		for (var i = 0; i < this.dados.length; i++) {
+			data += this.dados[i].id + sep;
+			data += this.dados[i].rua + sep;
+			data += this.dados[i].prateleira + sep;
+			data += this.dados[i].gaveta + sep;
 			data += this.dados[i].quantidade + "\r\n";
 		}
-		window.location = 'data:text/csv;base64,' + window.btoa(data);
+		var link = document.createElement('a');
+		link.download = "estoque.csv";
+		link.href = 'data:text/csv;base64,' + window.btoa(data);
+		link.click();
 	}
 	
 }
