@@ -95,13 +95,12 @@ Estoque = function() {
 	}
 	
 	this.selectAll = function() {
-		var self = this;
 		this.db.transaction(
 			function (transaction) {
 				transaction.executeSql("SELECT * FROM estoque;",
 					[], function(transaction, results) {
-						self.preencherDados(transaction, results);
-						self.mostrarLista();
+						this.preencherDados(transaction, results);
+						this.mostrarLista();
 					}, function(error) {
 						console.error(error);
 					});
@@ -109,7 +108,7 @@ Estoque = function() {
 		);
 	}
 	
-	function preencherDados(transaction, results) {
+	this.preencherDados = function(transaction, results) {
 		this.dados = [];
 		for (var i=0; i<results.rows.length; i++) {
 			var row = results.rows.data(i);
