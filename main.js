@@ -330,7 +330,7 @@ var options = {
 	grayScale: false,
 	contrast: 0,
 	threshold: 0,
-	sharpness: [0, -1, 0, -1, 5, -1, 0, -1, 0],      // to On declare matrix, example for sharpness ->  [0, -1, 0, -1, 5, -1, 0, -1, 0]
+	sharpness: [],      // to On declare matrix, example for sharpness ->  [0, -1, 0, -1, 5, -1, 0, -1, 0]
 	resultFunction: function(result) {
 		/*
 			result.format: code format,
