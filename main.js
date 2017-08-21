@@ -53,9 +53,9 @@ Estoque = function() {
 	this.insert = function(data){
 		this.db.transaction(
 			function (transaction) {
-				var params = [data.codigo, data.rua, data.prateleira, data.gaveta];
+				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.quantidade];
 				transaction.executeSql("INSERT INTO estoque(codigo, rua, prateleira, gaveta, quantidade)" +
-					" VALUES (?, ?, ?, ?, ?, ?)", params,
+					" VALUES (?, ?, ?, ?, ?)", params,
 					function(transaction, results){
 						console.log(transaction, results);
 						data.id = results.insertId;
@@ -69,7 +69,7 @@ Estoque = function() {
 	this.update = function(data){
 		this.db.transaction(
 			function (transaction) {
-				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.id];
+				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.quantidade, data.id];
 				transaction.executeSql("UPDATE estoque set codigo = ?, rua = ?, prateleira = ?, gaveta = ?, quantidade = ?)" +
 					" where id = ?", params,
 					function(transaction, results) {
