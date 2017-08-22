@@ -349,7 +349,10 @@ Estoque = function() {
 			data += this.dados[i].prateleira + sep;
 			data += this.dados[i].gaveta + sep;
 			data += this.dados[i].gaveta_interna + sep;
-			data += parseFloat(this.dados[i].quantidade).toFixed(2) + "\r\n";
+			var qtde = parseFloat(this.dados[i].quantidade).toFixed(2);
+			if (qtde == "NaN")
+				qtde = "";
+			data += qtde + "\r\n";
 		}
 		var file = new File([data], "estoque.csv", {type: "text/plain;charset=latin1"});
 		saveAs(file, "estoque.csv");
