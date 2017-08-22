@@ -7,7 +7,7 @@
   "theme_color": "#2196f3",
   "background_color": "#cfc9c9",
   "Scope": "/",
-  "start_url": "https://marlonscalabrin.github.io/balancoestoque7/",
+  "start_url": "https://balancoestoque.herokuapp.com/",
   "icons": [
     {
       "src": "icon-72x72.png",
@@ -54,6 +54,6 @@
   "display": "standalone",
   "related_applications": [{
       "platform": "web",
-	  "url": "https://marlonscalabrin.github.io/balancoestoque7"
+	  "url": "https://balancoestoque.herokuapp.com/"
   }]
 }
