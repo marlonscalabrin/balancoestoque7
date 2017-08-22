@@ -1,4 +1,4 @@
-var CACHE_NAME = 'static-v5';
+var CACHE_NAME = 'static-v6';
 
 self.addEventListener('install', function (event) {
 	console.log(event);
