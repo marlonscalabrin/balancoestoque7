@@ -202,7 +202,7 @@ Estoque = function() {
 			this.insert(data);
 			this.dados.push(data);
 		}
-		this.mostrarLista();
+		setTimeout(function(o){o.mostrarLista()}, 500, this);
 		this.novo();
 	}
 
