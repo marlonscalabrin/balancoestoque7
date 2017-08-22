@@ -1,13 +1,13 @@
 {
   "lang":"pt-BR",
   "dir":"ltr",
-  "name": "Payback Microgeração Solar",
-  "short_name": "Payback",
-  "description":"Aplicativo Web Instalável para calculo de payback de microgeração de energia solar.",
+  "name": "Balaço Estoque",
+  "short_name": "Estoque",
+  "description":"Aplicativo Web Para conferência de estoque Flessak.",
   "theme_color": "#2196f3",
   "background_color": "#cfc9c9",
   "Scope": "/",
-  "start_url": "https://marlonscalabrin.github.io/paybackgeracaosolar/",
+  "start_url": "https://marlonscalabrin.github.io/balancoestoque/",
   "icons": [
     {
       "src": "icon-72x72.png",
@@ -54,6 +54,6 @@
   "display": "standalone",
   "related_applications": [{
       "platform": "web",
-	  "url": "https://marlonscalabrin.github.io/paybackgeracaosolar"
+	  "url": "https://marlonscalabrin.github.io/balancoestoque"
   }]
 }
