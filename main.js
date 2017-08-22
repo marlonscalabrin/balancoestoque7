@@ -242,6 +242,7 @@ Estoque = function() {
 	}
 	
 	this.novo = function() {
+		this.id = "";
 		this.codigo = "";
 		this.rua = "";
 		this.prateleira = "";
