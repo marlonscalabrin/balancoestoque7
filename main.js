@@ -181,6 +181,7 @@ Estoque = function() {
 		}
 		
 		if (data) {
+			data["id"] = this.id;
 			data["codigo"] = this.codigo;
 			data["rua"] = this.rua;
 			data["prateleira"] = this.prateleira;
