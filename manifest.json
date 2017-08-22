@@ -7,7 +7,7 @@
   "theme_color": "#2196f3",
   "background_color": "#cfc9c9",
   "Scope": "/",
-  "start_url": "https://balancoestoque.herokuapp.com",
+  "start_url": "index.html",
   "icons": [
     {
       "src": "icon-144x144.png",
