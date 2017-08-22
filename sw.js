@@ -2,7 +2,7 @@ var CACHE_NAME = 'static-v6';
 
 self.addEventListener('install', function (event) {
 	console.log(event);
-  event.waitUntil(
+  //event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       return cache.addAll([
 		'/index.html',
@@ -23,12 +23,12 @@ self.addEventListener('install', function (event) {
 		'/webcodecamjs.js'
       ]);
     })
-  )
+  //)
 });
 
 self.addEventListener('activate', function activator(event) {
 	console.log(event);
-  event.waitUntil(
+  //event.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(keys
         .filter(function (key) {
@@ -39,7 +39,7 @@ self.addEventListener('activate', function activator(event) {
         })
       );
     })
-  );
+  //);
 });
 
 self.addEventListener('fetch', function (event) {
