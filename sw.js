@@ -1,6 +1,7 @@
 var CACHE_NAME = 'static-v5';
 
 self.addEventListener('install', function (event) {
+	console.log(event);
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       return cache.addAll([
