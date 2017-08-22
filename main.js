@@ -41,12 +41,22 @@ Estoque = function() {
 					' rua TEXT NOT NULL,' +
 					' prateleira TEXT NOT NULL,' +
 					' gaveta TEXT NOT NULL,' +
-					' gaveta_interna TEXT NOT NULL,' +
 					' quantidade INTEGER NOT NULL' +
 					');', [], function(transaction, data) {
-						console.log(transaction, data);
-					}, function(error) {
-						console.error(error);
+						console.log("TABLE OK", transaction, data);
+						try {
+							transaction.executeSql('ALTER TABLE estoque' +
+								" ADD gaveta_interna TEXT NOT NULL DEFAULT '';",
+								[], function(transaction, data) {
+									console.log('ALTER OK', transaction, data);
+								}, function(error) {
+									console.error('ALTER error', error);
+								});
+						} catch(e) {
+							console.error(e);
+						}
+					}, function(transaction, error) {
+						console.error("TABLE ERROR", transaction, error);
 					});
 			}
 		);
@@ -339,7 +349,7 @@ Estoque = function() {
 			data += this.dados[i].prateleira + sep;
 			data += this.dados[i].gaveta + sep;
 			data += this.dados[i].gaveta_interna + sep;
-			data += this.dados[i].quantidade + "\r\n";
+			data += parseFloat(this.dados[i].quantidade).toFixed(2) + "\r\n";
 		}
 		var file = new File([data], "estoque.csv", {type: "text/plain;charset=latin1"});
 		saveAs(file, "estoque.csv");
@@ -349,7 +359,9 @@ Estoque = function() {
 		var className = ".mdl-textfield";
 		var mdlInputs = document.querySelectorAll(className);
 		for (var i = 0, l = mdlInputs.length; i < l; i++) {
-			mdlInputs[i].MaterialTextfield.checkValidity();
+			try {
+				mdlInputs[i].MaterialTextfield.checkValidity();
+			} catch(e) {}
 		}
 	}
 	
@@ -411,12 +423,12 @@ var options = {
 	}
 };
 
-var canvas = document.querySelector('canvas');
-var decoder = new WebCodeCamJS(canvas);
+//var canvas = document.querySelector('canvas');
+//var decoder = new WebCodeCamJS(canvas);
 
-decoder.init(options);
+//decoder.init(options);
 /*decoder.buildSelectMenu('#camera-select', 'environment|back');
 decoder.buildSelectMenu('#camera-select', 'user|front');
 decoder.buildSelectMenu('#camera-select', 0);
 */
-decoder.play();
+//decoder.play();
