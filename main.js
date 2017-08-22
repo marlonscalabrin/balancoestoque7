@@ -75,8 +75,9 @@ Estoque = function() {
 					" where id = ?", params,
 					function(transaction, results) {
 						console.log(transaction, results);
-					}, function(error) {
-						console.log(error);
+					}, function(transaction, error) {
+						console.log("Data: " + data);
+						console.error(transaction, error);
 					});
 			}
 		);
@@ -89,8 +90,9 @@ Estoque = function() {
 				transaction.executeSql("DELETE from estoque where id = ?", params,
 					function(transaction, results) {
 						console.log(transaction, results);
-					}, function(error) {
-						console.log(error);
+					}, function(transaction, error) {
+						console.log("Data: " + data);
+						console.error(transaction, error);
 					});
 			}
 		);
