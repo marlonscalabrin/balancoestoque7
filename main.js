@@ -15,7 +15,7 @@ Estoque = function() {
 				var shortName = 'estoque';
 				var version = '1.0';
 				var displayName = 'Estoque';
-				var maxSize = 1000000; //  bytes
+				var maxSize = 100000; //  bytes
 				this.db = openDatabase(shortName, version, displayName, maxSize);
 				this.createTables();
 				this.selectAll();
