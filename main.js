@@ -4,6 +4,7 @@ Estoque = function() {
 	this.rua = "";
 	this.prateleira = "";
 	this.gaveta = "";
+	this.gaveta_interna = "";
 	this.quantidade = "";
 	this.dados = [];
 	
@@ -40,6 +41,7 @@ Estoque = function() {
 					' rua TEXT NOT NULL,' +
 					' prateleira TEXT NOT NULL,' +
 					' gaveta TEXT NOT NULL,' +
+					' gaveta_interna TEXT NOT NULL,' +
 					' quantidade INTEGER NOT NULL' +
 					');', [], function(transaction, data) {
 						console.log(transaction, data);
@@ -53,9 +55,9 @@ Estoque = function() {
 	this.insert = function(data){
 		this.db.transaction(
 			function (transaction) {
-				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.quantidade];
-				transaction.executeSql("INSERT INTO estoque(codigo, rua, prateleira, gaveta, quantidade)" +
-					" VALUES (?, ?, ?, ?, ?)", params,
+				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.gaveta_interna, data.quantidade];
+				transaction.executeSql("INSERT INTO estoque(codigo, rua, prateleira, gaveta, gaveta_interna, quantidade)" +
+					" VALUES (?, ?, ?, ?, ?, ?)", params,
 					function(transaction, results){
 						console.log(transaction, results);
 						data.id = results.insertId;
@@ -70,8 +72,8 @@ Estoque = function() {
 	this.update = function(data){
 		this.db.transaction(
 			function (transaction) {
-				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.quantidade, data.id];
-				transaction.executeSql("UPDATE estoque set codigo = ?, rua = ?, prateleira = ?, gaveta = ?, quantidade = ?" +
+				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.gaveta_interna, data.quantidade, data.id];
+				transaction.executeSql("UPDATE estoque set codigo = ?, rua = ?, prateleira = ?, gaveta = ?, gaveta_interna = ?, quantidade = ?" +
 					" where id = ?", params,
 					function(transaction, results) {
 						console.log(transaction, results);
@@ -126,6 +128,7 @@ Estoque = function() {
 			data.rua = row['rua'];
 			data.prateleira = row['prateleira'];
 			data.gaveta = row['gaveta'];
+			data.gaveta_interna = row['gaveta_interna'];
 			data.quantidade = row['quantidade'];
 			
 			this.dados.push(data);	 
@@ -135,11 +138,15 @@ Estoque = function() {
 	this.inicializarCampos = function() {
 		if (this.id)
 			document.getElementById("id").value = this.id.toString();
+		else
+			document.getElementById("id").value = "";
 		document.getElementById("codigo").value = this.codigo.toString();
 		document.getElementById("rua").value = this.rua.toString();
 		document.getElementById("prateleira").value = this.prateleira.toString();
 		document.getElementById("gaveta").value = this.gaveta.toString();
-		document.getElementById("quantidade").value = this.quantidade.toString();
+		document.getElementById("gaveta_interna").value = this.gaveta_interna.toString();
+		document.getElementById("quantidade").value = this.quantidade.toString().replace(".", ",");
+		this.mdlCleanUp();
 	}
 	
 	this.corrigeVirgula = function(event) {
@@ -147,6 +154,15 @@ Estoque = function() {
 	}
 	
 	this.salvar = function() {
+		
+		var className = ".mdl-textfield";
+		var mdlInputs = document.querySelectorAll(className);
+		for (var i = 0, l = mdlInputs.length; i < l; i++) {
+			if(!mdlInputs[i].MaterialTextfield.input_.validity.valid) {
+				//alert("Campo " + mdlInputs[i].MaterialTextfield.input_.id + " inválido");
+				return true;
+			}
+		}
 		if (document.getElementById("id").value != "")
 			this.id = parseInt(document.getElementById("id").value);
 		else
@@ -155,7 +171,14 @@ Estoque = function() {
 		this.rua = document.getElementById("rua").value;
 		this.prateleira = document.getElementById("prateleira").value;
 		this.gaveta = document.getElementById("gaveta").value;
-		this.quantidade = parseFloat(document.getElementById("quantidade").value.replace(",", "."));
+		this.gaveta_interna = document.getElementById("gaveta_interna").value;
+		this.quantidade = parseFloat(document.getElementById("quantidade").value.replace(",", ".")).toFixed(2);
+		
+		if (this.codigo == "" || this.rua == "" || this.prateleira == "" || this.gaveta == "" || this.gaveta_interna == "")
+			return;
+		
+		if (this.quantidade == "NaN")
+			this.quantidade = "";
 		
 		var data;
 		if (this.id != null && this.id != "") {
@@ -173,6 +196,7 @@ Estoque = function() {
 					"\n Rua: " + data.rua +
 					"\n Prateleira: " + data.prateleira +
 					"\n Gaveta: " + data.gaveta +
+					"\n Gaveta Interna: " + data.gaveta_interna +
 					"\n Quantidade: " + data.quantidade + 
 					"\nDeseja editar? Cancelar irá duplicar.")) {
 						data = null;
@@ -188,6 +212,7 @@ Estoque = function() {
 			data["rua"] = this.rua;
 			data["prateleira"] = this.prateleira;
 			data["gaveta"] = this.gaveta;
+			data["gaveta_interna"] = this.gaveta_interna;
 			data["quantidade"] = this.quantidade;
 			this.update(data);
 		} else {
@@ -196,6 +221,7 @@ Estoque = function() {
 				rua: this.rua,
 				prateleira: this.prateleira,
 				gaveta: this.gaveta,
+				gaveta_interna: this.gaveta_interna,
 				quantidade: this.quantidade
 			}
 			
@@ -225,6 +251,9 @@ Estoque = function() {
 			td.innerHTML = dados[i].gaveta;
 			tr.appendChild(td);
 			td = document.createElement("td");
+			td.innerHTML = dados[i].gaveta_interna;
+			tr.appendChild(td);
+			td = document.createElement("td");
 			td.innerHTML = dados[i].quantidade;
 			tr.appendChild(td);
 			td = document.createElement("td");
@@ -233,9 +262,9 @@ Estoque = function() {
 			editar.type = "button";
 			remover.type = "button";
 			editar.setAttribute("onclick", "estoque.editar("+dados[i].id+"); return false;");
-			editar.value = "Editar";
+			editar.value = "✔";
 			remover.setAttribute("onclick", "estoque.remover("+dados[i].id+"); return false;");
-			remover.value = "Remover";
+			remover.value = "✘";
 			td.appendChild(editar);
 			td.appendChild(remover);
 			tr.appendChild(td);
@@ -250,6 +279,7 @@ Estoque = function() {
 		this.rua = "";
 		this.prateleira = "";
 		this.gaveta = "";
+		this.gaveta_interna = "";
 		this.quantidade = "";
 		this.inicializarCampos();
 	}
@@ -268,6 +298,7 @@ Estoque = function() {
 			this.rua = data.rua;
 			this.prateleira = data.prateleira;
 			this.gaveta = data.gaveta;
+			this.gaveta_interna = data.gaveta_interna;
 			this.quantidade = data.quantidade;
 			this.inicializarCampos();
 		}
@@ -275,6 +306,8 @@ Estoque = function() {
 	
 	this.remover = function(id) {
 		var data;
+		if (!confirm("Deseja realmente Remover?"))
+			return;
 		for (var i = 0; i < this.dados.length; i++) {
 			if (this.dados[i].id == id) {
 				data = this.dados[i];
@@ -290,11 +323,14 @@ Estoque = function() {
 		var data = '';
 		var sep = prompt("Digite o caracter separador. ';' para Excel ou ',' para demais editores de planilha.");
 		sep = sep[0];
+		if (!sep)
+			sep = ";";
 		data += "id" + sep;
 		data += "Código" + sep;
 		data += "Rua" + sep;
 		data += "Prateleira" + sep;
 		data += "Gaveta" + sep;
+		data += "Gaveta Interna" + sep;
 		data += "Quantidade" + "\r\n";
 		for (var i = 0; i < this.dados.length; i++) {
 			data += this.dados[i].id + sep;
@@ -302,16 +338,24 @@ Estoque = function() {
 			data += this.dados[i].rua + sep;
 			data += this.dados[i].prateleira + sep;
 			data += this.dados[i].gaveta + sep;
+			data += this.dados[i].gaveta_interna + sep;
 			data += this.dados[i].quantidade + "\r\n";
 		}
-		var link = document.createElement('a');
-		link.download = "estoque.csv";
-		link.href = 'data:text/csv;base64,' + window.btoa(data);
-		link.click();
+		var file = new File([data], "estoque.csv", {type: "text/plain;charset=latin1"});
+		saveAs(file, "estoque.csv");
+	}
+	
+	this.mdlCleanUp = function(){
+		var className = ".mdl-textfield";
+		var mdlInputs = document.querySelectorAll(className);
+		for (var i = 0, l = mdlInputs.length; i < l; i++) {
+			mdlInputs[i].MaterialTextfield.checkValidity();
+		}
 	}
 	
 }
 estoque = new Estoque();
+estoque.mdlCleanUp();
 
 var options = {
 	successTimeout: 1000,

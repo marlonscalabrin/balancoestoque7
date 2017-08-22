@@ -24,7 +24,10 @@
 	<script src="./DecoderWorker.js"></script>
 	<script src="./qrcodelib.js"></script>
 	<script src="./webcodecamjs.js"></script>
-    <script src="chart.js"></script>
+    <script src="./chart.js"></script>
+	
+	<script src="./Blob.js"></script>
+    <script src="./FileSaver.min.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="./addtohomescreen.css">
 	<script src="./addtohomescreen.min.js"></script>
@@ -52,42 +55,50 @@
         <a name="top"></a>
         <div class="mdl-typography--text-center">
 			<form action="#">
-			  <div>
+			  <!--<div>
 				<canvas></canvas>
-			  </div>
+			  </div>-->
 			  <div>
 				<label for="codigo">Código</label>
 			  </div>
 			  <div class="mdl-textfield mdl-js-textfield">
 				<input type="hidden" id="id">
-				<input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(,[0-9]+)?" id="codigo">
-				<span class="mdl-textfield__error">Código deve ser um número!</span>
+				<input class="mdl-textfield__input" type="text" pattern="[0-9]{1,6}" id="codigo" required="required">
+				<span class="mdl-textfield__error">Código deve ser um número de 6 dígitos!</span>
 			  </div>
 			  <div>
 				<label for="rua">Rua</label>
 			  </div>
 			  <div class="mdl-textfield mdl-js-textfield">
-				<input class="mdl-textfield__input" type="text" id="rua">
+				<input class="mdl-textfield__input" type="text" pattern="[0-9]{1,4}" id="rua" required="required">
+				<span class="mdl-textfield__error">Rua deve ser um número de 4 dígitos!</span>
 			  </div>
 			  <div>
 				<label for="prateleira">Prateleira</label>
 			  </div>
 			  <div class="mdl-textfield mdl-js-textfield">
-				<input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(,[0-9]+)?" id="prateleira">
-				<span class="mdl-textfield__error">Prateleira deve ser um número!</span>
+				<input class="mdl-textfield__input" type="text" pattern=".{0,1}" id="prateleira" required="required">
+				<span class="mdl-textfield__error">Prateleira deve ser um caracter!</span>
 			  </div>
 			  <div>
 				<label for="gaveta">Gaveta</label>
 			  </div>
 			  <div class="mdl-textfield mdl-js-textfield">
-				<input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(,[0-9]+)?" id="gaveta">
-				<span class="mdl-textfield__error">Gaveta deve ser um número!</span>
+				<input class="mdl-textfield__input" type="text" pattern="[0-9]{1,4}" id="gaveta" required="required">
+				<span class="mdl-textfield__error">Gaveta deve ser um número de 4 dígitos!</span>
+			  </div>
+			  <div>
+				<label for="gaveta_interna">Gaveta Interna</label>
+			  </div>
+			  <div class="mdl-textfield mdl-js-textfield">
+				<input class="mdl-textfield__input" type="text" pattern="[0-9]{1,4}" id="gaveta_interna" required="required">
+				<span class="mdl-textfield__error">Gaveta Interna deve ser um número de 4 dígitos!</span>
 			  </div>
 			  <div>
 				<label for="quantidade">Quantidade</label>
 			  </div>
 			  <div class="mdl-textfield mdl-js-textfield">
-				<input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(,[0-9]+)?" id="quantidade">
+				<input class="mdl-textfield__input" type="text" pattern="-?[0-9]{1,14}([,\.][0-9]{0,2})?" id="quantidade">
 				<span class="mdl-textfield__error">Quantidade deve ser um número!</span>
 			  </div>
 			  <h2 id="payback"></h2>
@@ -96,13 +107,11 @@
 			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="estoque.novo(); return false;">
 				Novo
 			</button>
-			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="estoque.salvar(); return false;">
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="return estoque.salvar();">
 				Salvar
 			</button>
 			</form>
         </div>
-		
-		<canvas id="chart" class="chartjs"></canvas>
 		
 		<table id="tabela" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="margin:0 auto; display:none">
 		  <thead>
@@ -111,6 +120,7 @@
 			  <th>Rua</th>
 			  <th>Prat</th>
 			  <th>Gav</th>
+			  <th>Int</th>
 			  <th>Qtde</th>
 			  <th></th>
 			</tr>
