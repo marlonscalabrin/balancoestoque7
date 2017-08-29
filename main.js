@@ -60,7 +60,7 @@ Estoque = function() {
 								[], function(transaction, data) {
 									console.log('ALTER OK', transaction, data);
 								try {
-									transaction.executeSql("update estoque set date_time = datetime('now', 'localtime');",
+									transaction.executeSql("update estoque set date_time = datetime('now', 'localtime') where date_time is null;",
 										[], function(transaction, data) {
 											console.log('ALTER OK', transaction, data);
 										}, function(tx, error) {
