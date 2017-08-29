@@ -55,6 +55,17 @@ Estoque = function() {
 						} catch(e) {
 							console.error(e);
 						}
+						try {
+							transaction.executeSql('ALTER TABLE estoque' +
+								" ADD date_time TEXT DEFAULT (CAST(datetime('now', 'localtime') AS TEXT));",
+								[], function(transaction, data) {
+									console.log('ALTER OK', transaction, data);
+								}, function(error) {
+									console.error('ALTER error', error);
+								});
+						} catch(e) {
+							console.error(e);
+						}
 					}, function(transaction, error) {
 						console.error("TABLE ERROR", transaction, error);
 					});
@@ -84,6 +95,7 @@ Estoque = function() {
 			function (transaction) {
 				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.gaveta_interna, data.quantidade, data.id];
 				transaction.executeSql("UPDATE estoque set codigo = ?, rua = ?, prateleira = ?, gaveta = ?, gaveta_interna = ?, quantidade = ?" +
+					", date_time = (CAST(datetime('now', 'localtime') AS TEXT))" +
 					" where id = ?", params,
 					function(transaction, results) {
 						console.log(transaction, results);
@@ -184,8 +196,8 @@ Estoque = function() {
 		this.gaveta_interna = document.getElementById("gaveta_interna").value;
 		this.quantidade = parseFloat(document.getElementById("quantidade").value.replace(",", ".")).toFixed(2);
 		
-		if (this.codigo == "" || this.rua == "" || this.prateleira == "" || this.gaveta == "" || this.gaveta_interna == "")
-			return;
+		if (this.codigo == "" || this.rua == "" || this.prateleira == "" || this.gaveta == "")
+			return true;
 		
 		if (this.quantidade == "NaN")
 			this.quantidade = "";
@@ -341,7 +353,8 @@ Estoque = function() {
 		data += "Prateleira" + sep;
 		data += "Gaveta" + sep;
 		data += "Gaveta Interna" + sep;
-		data += "Quantidade" + "\r\n";
+		data += "Quantidade" + sep;
+		data += "Data" + "\r\n";
 		for (var i = 0; i < this.dados.length; i++) {
 			data += this.dados[i].id + sep;
 			data += this.dados[i].codigo + sep;
@@ -352,7 +365,8 @@ Estoque = function() {
 			var qtde = parseFloat(this.dados[i].quantidade).toFixed(2);
 			if (qtde == "NaN")
 				qtde = "";
-			data += qtde + "\r\n";
+			data += qtde + sep;
+			data += this.dados[i].date_time + "\r\n";
 		}
 		var file = new File([data], "estoque.csv", {type: "text/plain;charset=latin1"});
 		saveAs(file, "estoque.csv");
