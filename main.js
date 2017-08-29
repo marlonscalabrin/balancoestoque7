@@ -49,20 +49,30 @@ Estoque = function() {
 								" ADD gaveta_interna TEXT NOT NULL DEFAULT '';",
 								[], function(transaction, data) {
 									console.log('ALTER OK', transaction, data);
-								}, function(error) {
+								}, function(tx, error) {
 									console.error('ALTER error', error);
 								});
 						} catch(e) {
 							console.error(e);
 						}
 						try {
-							transaction.executeSql('ALTER TABLE estoque' +
-								" ADD date_time TEXT DEFAULT (CAST(datetime('now', 'localtime') AS TEXT));",
+							transaction.executeSql('ALTER TABLE estoque ADD date_time TEXT;',
 								[], function(transaction, data) {
 									console.log('ALTER OK', transaction, data);
-								}, function(error) {
+								try {
+									transaction.executeSql("update estoque set date_time = datetime('now', 'localtime');",
+										[], function(transaction, data) {
+											console.log('ALTER OK', transaction, data);
+										}, function(tx, error) {
+											console.error('ALTER error', error);
+										});
+								} catch(e) {
+									console.error(e);
+								}
+								}, function(tx, error) {
 									console.error('ALTER error', error);
-								});
+								}
+							);
 						} catch(e) {
 							console.error(e);
 						}
@@ -77,8 +87,8 @@ Estoque = function() {
 		this.db.transaction(
 			function (transaction) {
 				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.gaveta_interna, data.quantidade];
-				transaction.executeSql("INSERT INTO estoque(codigo, rua, prateleira, gaveta, gaveta_interna, quantidade)" +
-					" VALUES (?, ?, ?, ?, ?, ?)", params,
+				transaction.executeSql("INSERT INTO estoque(codigo, rua, prateleira, gaveta, gaveta_interna, quantidade, date_time)" +
+					" VALUES (?, ?, ?, ?, ?, ?, datetime('now', 'localtime'))", params,
 					function(transaction, results){
 						console.log(transaction, results);
 						data.id = results.insertId;
@@ -95,7 +105,7 @@ Estoque = function() {
 			function (transaction) {
 				var params = [data.codigo, data.rua, data.prateleira, data.gaveta, data.gaveta_interna, data.quantidade, data.id];
 				transaction.executeSql("UPDATE estoque set codigo = ?, rua = ?, prateleira = ?, gaveta = ?, gaveta_interna = ?, quantidade = ?" +
-					", date_time = (CAST(datetime('now', 'localtime') AS TEXT))" +
+					", date_time = datetime('now', 'localtime')" +
 					" where id = ?", params,
 					function(transaction, results) {
 						console.log(transaction, results);
