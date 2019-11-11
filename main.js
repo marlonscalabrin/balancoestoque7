@@ -366,17 +366,23 @@ Estoque = function() {
 		data += "Quantidade" + sep;
 		data += "Data" + "\r\n";
 		for (var i = 0; i < this.dados.length; i++) {
-			data += this.dados[i].id + sep;
-			data += this.dados[i].codigo + sep;
-			data += this.dados[i].rua + sep;
-			data += this.dados[i].prateleira + sep;
-			data += this.dados[i].gaveta + sep;
-			data += this.dados[i].gaveta_interna + sep;
-			var qtde = parseFloat(this.dados[i].quantidade).toFixed(2);
-			if (qtde == "NaN")
-				qtde = "";
-			data += qtde + sep;
-			data += this.dados[i].date_time + "\r\n";
+			try {
+				data += this.dados[i].id + sep;
+				data += this.dados[i].codigo + sep;
+				data += this.dados[i].rua + sep;
+				data += this.dados[i].prateleira + sep;
+				data += this.dados[i].gaveta + sep;
+				data += this.dados[i].gaveta_interna + sep;
+				var qtde = parseFloat(this.dados[i].quantidade).toFixed(2);
+				if (qtde == "NaN")
+					qtde = "";
+				data += qtde + sep;
+				data += this.dados[i].date_time + "\r\n";
+			}
+			catch 
+			{
+				data += "ERRO!\r\n";
+			}
 		}
 		var file = new File([data], "estoque.csv", {type: "text/plain;charset=latin1"});
 		saveAs(file, "estoque.csv");
